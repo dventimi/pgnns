@@ -1,0 +1,8 @@
+/adhoc.sql
+*.csv
+*.gz
+*.jsonl
+*.txt
+/setenv.sh
+*.zip
+/scratch.py
