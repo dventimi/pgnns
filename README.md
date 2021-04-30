@@ -4,7 +4,9 @@
 
 ## Download Embeddings ##
 
-Download the pre-computed embeddings file `embeddings.csv.gz` from the following location.
+Download the pre-computed embeddings file `embeddings.csv.gz` from the following location on Google Drive.
+
+https://drive.google.com/file/d/1XQa74OCJlun2e3CVbyhOuaMu7Mq6Ww3l/view?usp=sharing
 
 ## Create Environment Script ##
 

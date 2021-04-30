@@ -33,7 +33,7 @@ export EMBEDDINGS
 sample.gz: embeddings.csv.gz
 	cat $< | \
 	zcat | \
-	shuf -n$(SAMPLES) $? | \
+	shuf -n$(SAMPLES) | \
 	gzip > $@
 
 report.txt: sample.gz
