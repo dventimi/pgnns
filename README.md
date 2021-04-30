@@ -13,7 +13,6 @@ https://drive.google.com/file/d/1XQa74OCJlun2e3CVbyhOuaMu7Mq6Ww3l/view?usp=shari
 Create the file `setenv.sh` in the following way.  You're free to choose whatever values you like.  Note the following.
 
   * `SAMPLES` is the number of `(title, embedding)` pairs to import into the database.
-  * `ITEMS` is the number of documents that can be treated as search targets.
   * `TRANSACTIONS` is the actual number of benchmark operations to perform, referring to the number of queries to make.
 
 ```sh
@@ -23,7 +22,6 @@ export PGDATABASE=pgbench
 export PGUSER=pgbench
 export PGPASSWORD=pgbench
 export SAMPLES=10000000
-export ITEMS=1000
 export TRANSACTIONS=10
 ```
 

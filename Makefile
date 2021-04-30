@@ -37,12 +37,10 @@ sample.gz: embeddings.csv.gz
 	gzip > $@
 
 report.txt: sample.gz
-	psql -c "drop table if exists item"
-	psql -c "drop table if exists sample"
-	psql -c "drop extension if exists cube"
+	psql -c "drop table if exists sample cascade"
+	psql -c "drop extension if exists cube cascade"
 	psql -c "create extension if not exists cube"
 	psql -c "create table if not exists sample (id serial primary key, title text, embedding cube)"
 	psql -c "\copy sample (title, embedding) from program 'cat $< | zcat' with (format csv, header true)"
 	psql -c "create index on sample using gist (embedding)"
-	psql -c "create table if not exists item as (select * from sample limit $(ITEMS))"
-	pgbench -f test.sql -n -t $(TRANSACTIONS) -r -P 5 > $@
+	pgbench -f test.sql -n -t $(TRANSACTIONS) -r -P 5 -DEMBEDDING="$$(psql -c 'select embedding from sample order by random() limit 1' -At)" > $@
