@@ -11,7 +11,7 @@ titles.txt: wikipedia-article-titles.zip
 	unzip -o $<
 	touch $@
 
-embeddings.gz: titles.txt
+embeddings.csv.gz: titles.txt
 	cat $? | \
 	python -c "$$EMBEDDINGS" | \
 	gzip > $@
@@ -30,7 +30,7 @@ writer.writerows(embeddings)
 endef
 export EMBEDDINGS
 
-sample.gz: embeddings.gz
+sample.gz: embeddings.csv.gz
 	cat $< | \
 	zcat | \
 	shuf -n$(SAMPLES) $? | \
