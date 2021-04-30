@@ -76,7 +76,7 @@ export ANNDB_LOAD
 report_anndb.jsonl: sample.csv.gz
 	cat $< | \
 	zcat | \
-	shuf -n10 | \
+	shuf -n100 | \
 	python -c "$$ANNDB_TEST" > $@
 define ANNDB_TEST
 import anndb_api
