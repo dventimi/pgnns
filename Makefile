@@ -42,7 +42,6 @@ report_pgnns.txt: sample.csv.gz
 	psql -c "create extension if not exists cube"
 	psql -c "create table if not exists sample (id serial primary key, title text, embedding cube)"
 	psql -c "\copy sample (title, embedding) from program 'cat $< | zcat' with (format csv, header true)"
-	psql -c "create index on sample using gist (embedding)"
 	pgbench -f test.sql -n -t $(TRANSACTIONS) -r -P 5 -DEMBEDDING="$$(psql -c 'select embedding from sample order by random() limit 1' -At)" > $@
 
 anndb.csv.gz: sample.csv.gz
@@ -66,7 +65,7 @@ dataset = client.vector('$(DATASET)')
 records = csv.reader(sys.stdin)
 pairs = ([list(eval(r[1])), {'title': r[0]}] for r in records)
 items = (anndb_api.VectorItem(None, p[0], p[1]) for p in pairs)
-batches = batch(items, 10)
+batches = batch(items, 100)
 results = (dataset.insert_batch(b) for b in batches)
 urns = (list(map(lambda x: x.id.urn, r)) for r in results)
 writer = csv.writer(sys.stdout)
