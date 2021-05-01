@@ -25,7 +25,7 @@ export PGUSER=pgbench
 export PGPASSWORD=pgbench
 export SAMPLES=10000000
 export TRANSACTIONS=10
-export APIKEY='5ff061903cabb10fdb67dd223108d4f44306e80648b748886d43a1209274eed4'
+export APIKEY=<redacted>
 export DATASET='wikipedia-titles'
 ```
 
