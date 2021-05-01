@@ -14,6 +14,8 @@ Create the file `setenv.sh` in the following way.  You're free to choose whateve
 
   * `SAMPLES` is the number of `(title, embedding)` pairs to import into the database.
   * `TRANSACTIONS` is the actual number of benchmark operations to perform, referring to the number of queries to make.
+  * `APIKEY` is the API Key for [AnnDB](https://docs.anndb.com/), which also is being evaluated here.
+  * `DATASET` is the name of a dataset in AnnDB.  See the documentation there for more information.
 
 ```sh
 export PGHOST=localhost
@@ -23,6 +25,8 @@ export PGUSER=pgbench
 export PGPASSWORD=pgbench
 export SAMPLES=10000000
 export TRANSACTIONS=10
+export APIKEY='5ff061903cabb10fdb67dd223108d4f44306e80648b748886d43a1209274eed4'
+export DATASET='wikipedia-titles'
 ```
 
 ## Start PostgreSQL Database ##
