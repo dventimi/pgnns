@@ -36,16 +36,14 @@ sample.csv.gz: embeddings.csv.gz
 	shuf -n$(SAMPLES) | \
 	gzip > $@
 
-pgnns.csv.gz: sample.csv.gz
+report_pgnns.txt: sample.csv.gz
 	psql -c "drop table if exists sample cascade"
 	psql -c "drop extension if exists cube cascade"
 	psql -c "create extension if not exists cube"
 	psql -c "create table if not exists sample (id serial primary key, title text, embedding cube)"
 	psql -c "\copy sample (title, embedding) from program 'cat $< | zcat' with (format csv, header true)"
 	psql -c "select count (1) from sample" -At | gzip > $@
-
-report_pgnns.txt: pgnns.csv.gz
-	pgbench -f test.sql -n -t $(TRANSACTIONS) -r -P 5 -DEMBEDDING="$$(psql -c 'select embedding from sample order by random() limit 1' -At)" > $@
+	for i in {1..$(TRANSACTIONS)} ; do pgbench -f test.sql -n -t 1 -r -P 5 -DEMBEDDING="$$(psql -c 'select embedding from sample order by random() limit 1' -At)" >> $@ ; done
 
 anndb.csv.gz: sample.csv.gz
 	cat $< | \
