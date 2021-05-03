@@ -30,18 +30,16 @@ writer.writerows(embeddings)
 endef
 export EMBEDDINGS
 
-sample.csv.gz: embeddings.csv.gz
+report_pgnns.txt: embeddings.csv.gz
 	cat $< | \
 	zcat | \
 	shuf -n$(SAMPLES) | \
-	gzip > $@
-
-report_pgnns.txt: sample.csv.gz
+	gzip > samples.csv.gz
 	psql -c "drop table if exists sample cascade"
 	psql -c "drop extension if exists cube cascade"
 	psql -c "create extension if not exists cube"
 	psql -c "create table if not exists sample (id serial primary key, title text, embedding cube)"
-	psql -c "\copy sample (title, embedding) from program 'cat $< | zcat' with (format csv, header true)"
+	psql -c "\copy sample (title, embedding) from program 'cat samples.csv.gz | zcat' with (format csv, header true)"
 	psql -c "select count (1) from sample" -At | gzip > $@
 	for i in {1..$(TRANSACTIONS)} ; do pgbench -f test.sql -n -t 1 -r -P 5 -DEMBEDDING="$$(psql -c 'select embedding from sample order by random() limit 1' -At)" >> $@ ; done
 
